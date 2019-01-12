@@ -1,0 +1,16 @@
+Gemfile / bundler
+install instructions
+rspec tests
+reusable library
+configuration (file, env, in-line)
+- word length (1-n)
+- word chunk
+extensible (multiple implementations like each, line, etc.)
+could parallelize
+- break input into chunks at whitespace boundary
+- could use single db like dynamo w/ n number of processor instances
+- could also have separate data stores and recombine results (need to store more than top 100 from each though, in case cumulative amount is top-100 but individually not)
+
+Ordering
+- ordering when multiple phrases tie for count will be in order of accumulation in text (which is scanned beginning to end)
+- in the case of parallel processing, this would be more randomized (by completion time on particular nodes)
