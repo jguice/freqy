@@ -67,3 +67,8 @@ Initial steps for setup of development environment (macOS):
 - dependencies: `bundle install --binstubs`
 
 #### Running Tests
+
+To run project tests:
+```
+./bin/rspec
+```
