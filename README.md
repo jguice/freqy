@@ -64,6 +64,6 @@ Initial steps for setup of development environment (macOS):
 **NOTE:** At this point you'll likely need to open a new terminal window for chruby auto-versioning to work.
 
 - bundler:`gem install bundler`
-- dependencies: `bundle install`
+- dependencies: `bundle install --binstubs`
 
 #### Running Tests
