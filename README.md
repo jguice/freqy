@@ -50,3 +50,20 @@ to the appropriate ruby version if configured (and installed).
 [RSpec](http://rspec.info) is the test framework used to validate freqy behavior/requirements.
 
 ## Development / Testing
+
+### dev environment setup
+Initial steps for setup of development environment (macOS):
+
+#### Install...
+
+- [Homebrew](https://brew.sh)
+- chruby: `brew install chruby`
+- ruby-install: `brew install ruby-install`
+- ruby-2.5.1: `ruby-install ruby-2.5.1`
+
+**NOTE:** At this point you'll likely need to open a new terminal window for chruby auto-versioning to work.
+
+- bundler:`gem install bundler`
+- dependencies: `bundle install`
+
+#### Running Tests
