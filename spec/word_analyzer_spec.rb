@@ -35,6 +35,16 @@ RSpec.describe WordAnalyzer, '#initialize' do
       expect(word_analyzer.chunk).to be(3)
     end
   end
+
+  context 'with invalid arguments' do
+    it 'raises an exception for delimiter array' do
+      expect { WordAnalyzer.new(%w[one two]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises an exception for string chunk' do
+      expect { WordAnalyzer.new('.', '3') }.to raise_error(ArgumentError)
+    end
+  end
 end
 
 RSpec.describe WordAnalyzer, '#process_stdin' do

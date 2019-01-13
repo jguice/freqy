@@ -10,11 +10,14 @@ class WordAnalyzer
   # @param delimiter [String] text that separates "words"
   # @param chunk [Integer] number of word chunks to read in a batch (adjust for performance tuning)
   def initialize(delimiter = ' ', chunk = 1000)
-
     @delimiter = delimiter # char that separates "words"
     @chunk = chunk # words
 
-    @freqs = Hash.new
+    # validate argument types
+    raise(ArgumentError) unless @delimiter.class == String
+    raise(ArgumentError) unless @chunk.class == Integer
+
+    @freqs = {}
   end
 
   def process_stdin(text)
