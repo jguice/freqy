@@ -17,3 +17,8 @@ Ordering
 Documentation
 - could use github pages and merge docs + doc (generated) but better to use a pipeline to build and publish docs on every
   commit
+
+Future
+- extract strings for localization
+- capture generic version for cli blueprint
+- higher-level tests (integration, load, performance)
