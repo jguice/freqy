@@ -7,6 +7,8 @@ require 'ostruct'
 require 'date'
 require 'pp'
 
+require_relative 'word_analyzer'
+
 ##
 # Implements a command-line interface for the frequency analyzer
 class Cli
@@ -129,7 +131,7 @@ class Cli
   def do_work
     puts 'Analyzing Data: ' + @options.files.join(', ')
 
-    word_analyzer = WordAnalyzer.new()
+    word_analyzer = WordAnalyzer.new
 
     if @stdin.tty?
       word_analyzer.process_files(@options.files)
