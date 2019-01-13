@@ -102,7 +102,7 @@ RSpec.configure do |config|
 
   config.warnings = true
   config.order = :random
-  config.default_formatter = "doc"
+  config.default_formatter = 'doc'
   Kernel.srand config.seed
 
 end
