@@ -1,3 +1,4 @@
+TODO: move to README (end)
 
 configuration (file, env, in-line)
 - word length (1-n)
@@ -22,3 +23,4 @@ Future
 - extract strings for localization
 - capture generic version for cli blueprint
 - higher-level tests (integration, load, performance)
+- JSON result (for web API integration)
