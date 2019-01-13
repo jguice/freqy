@@ -12,12 +12,14 @@ require 'pp'
 class Cli
   VERSION = '0.0.1'
 
+  FILENAME = File.basename(__FILE__)
+
   BANNER = <<~BANNER
 
     🧮  Freqy (freaky) word analyzer.  Analyzes word (or phrase) frequency in text.
        Accepts stdin piped text, or file(s) via -f argument.
 
-    Usage: #{@filename} [options]
+    Usage: #{FILENAME} [options]
   BANNER
 
   attr_reader :options
@@ -28,9 +30,6 @@ class Cli
   def initialize(argv, stdin)
     @arguments = argv
     @stdin = stdin
-
-    # my filename (for portable help over renames)
-    @filename = File.basename(__FILE__)
 
     # options data structure
     @options = OpenStruct.new
@@ -117,7 +116,7 @@ class Cli
 
   # show application version
   def show_version
-    puts "#{@filename} version #{VERSION}"
+    puts "#{FILENAME} version #{VERSION}"
   end
 
   # display user help
