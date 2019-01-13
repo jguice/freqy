@@ -60,6 +60,7 @@ RSpec.describe Cli, '#run' do
       expect { cli.run }.to output(/myfile\.txt/).to_stdout
     end
 
+    # The program accepts as arguments a list of one or more file paths (e.g. ./solution.rb file1.txt file2.txt ...)
     it 'accepts a multiple filenames' do
       cli = Cli.new(%w[myfile.txt yourfile.txt], StringIO.new(''))
       expect { cli.run }.to output(/myfile\.txt, yourfile\.txt/).to_stdout
@@ -68,6 +69,14 @@ RSpec.describe Cli, '#run' do
     it 'ignores duplicate filenames' do
       cli = Cli.new(%w[myfile.txt yourfile.txt yourfile.txt theirfile.txt yourfile.txt], StringIO.new(''))
       expect { cli.run }.to output(/myfile\.txt, yourfile\.txt, theirfile\.txt/).to_stdout
+    end
+  end
+
+  # The program also accepts input on stdin (e.g. cat file1.txt | ./solution.rb).
+  context 'with stdin' do
+    it 'does not show help with any stdin input' do
+      cli = Cli.new([], StringIO.new('data'))
+      expect { cli.run }.to_not output(/specify input file/).to_stdout
     end
   end
 end
