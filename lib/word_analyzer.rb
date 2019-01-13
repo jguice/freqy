@@ -4,6 +4,8 @@
 # Analyzes word (or multi-word) frequency in (potentially large) text
 class WordAnalyzer
 
+  # TODO: add top_n argument to allow for something besides top 100
+  # TODO: add words argument to allow for something besides 3 word phrase
   attr_reader(:delimiter, :chunk)
 
   # Creates new word analyzer
@@ -17,7 +19,7 @@ class WordAnalyzer
     raise(ArgumentError) unless @delimiter.class == String
     raise(ArgumentError) unless @chunk.class == Integer
 
-    @freqs = {}
+    @freqs = Hash.new(0)
   end
 
   def process_stdin(text)
@@ -32,10 +34,36 @@ class WordAnalyzer
 
   # analyzes element frequency in provided text
   # @param text [Enumerable] enumerable stream containing text (like a ruby IO object)
+  # @return result [Hash] map of word chunks sorted by most to least frequent (top 'n' results)
   def analyze(text)
+    return 'No input to process' if text.eof?
+
+    phrase = []
+
     text.each(@delimiter).lazy.each_slice(@chunk) do |words|
       pp words
+      pp @delimiter
+
+      words.each do |word|
+
+        # remove special chars/spaces (NOTE: this is subtractive to attempt to preserve International characters)
+        word.gsub!(/[ !@%&"]/, '')
+        word.downcase!
+
+        phrase << word
+
+        if phrase.size == 3
+          @freqs[phrase.join(@delimiter)] += 1
+        end
+      end
+
     end
+
+    pp @freqs
+
+    return 'Not enough data' if @freqs.empty?
+
+    @freqs
   end
 
 end
