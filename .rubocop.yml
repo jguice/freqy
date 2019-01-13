@@ -1,2 +1,6 @@
+# allow 120 char lines (modern screens are generally wide)
 Metrics/LineLength:
   Max: 120
+# ignore block length for RSpec DSL blocks
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
