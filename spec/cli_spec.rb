@@ -3,6 +3,8 @@
 # noinspection RubyResolve
 require 'cli'
 
+# TODO: shell exit code tests
+
 RSpec.describe Cli, '#run' do
   context 'with version arg' do
     it 'outputs the cli version' do
@@ -28,7 +30,7 @@ RSpec.describe Cli, '#run' do
   context 'with file arg' do
     it 'requires at least one filename' do
       cli = Cli.new(['-f'], StringIO.new(''))
-      expect { cli.run }.to output(/missing argument/).to_stdout
+      expect { cli.run }.to output(/specify input file/).to_stdout
     end
 
     it 'accepts a single filename' do
