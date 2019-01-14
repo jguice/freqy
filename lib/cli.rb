@@ -100,8 +100,8 @@ class Cli
 
   # validate required options and show message + help if needed
   def check_required
-    # handle case where no files or text were passed
-    return unless @options.files.to_a.empty? && @stdin.eof? # to_a.empty? handles nil or empty case
+    # handle case where no files or text were passed (a tty is connected or STDIN is EOF in the latter case)
+    return unless @options.files.to_a.empty? && (@stdin.tty? || @stdin.eof?) # to_a.empty? handles nil or empty case
 
     puts 'Either specify input file(s) or pipe text to STDIN'
     show_help
