@@ -38,6 +38,7 @@ class Cli
 
     # set option defaults
     @options.verbose = false
+    @options.number = 100
 
     @parser = OptionParser.new
   end
@@ -86,15 +87,16 @@ class Cli
 
   # define accepted options, types, simple behaviors, etc.
   # @return [Integer, nil] shell exit code or nothing depending on user-provided options
+  # noinspection RubyBlockToMethodReference
   def setup_options
     @parser.banner = BANNER
 
-    @parser.on('-V', '--version', 'display version and exit') do
-      show_version
-      0
+    @parser.on('-V', '--version', 'display version and exit') { show_version }
+    @parser.on('-h', '--help', 'display help and exit') { show_help }
+    @parser.on('-f', '--files=[file1.txt file2.txt ...]', Array, 'text files to read') { |o| @options.files = o }
+    @parser.on('-n', '--number=NUM', Integer, 'number of results to show [default = 100]') do |n|
+      @options.number = n
     end
-    @parser.on('-h', '--help', 'display help and exit', &method(:show_help))
-    @parser.on('-f', '--files file1.txt file2.txt ...', Array, 'text files to read') { |o| @options.files = o }
     @parser.on('-v', '--verbose', 'verbose output') { @options.verbose = true }
   end
 
@@ -124,7 +126,6 @@ class Cli
   # display user help
   def show_help
     puts @parser
-    0
   end
 
   # initiate actual functionality
