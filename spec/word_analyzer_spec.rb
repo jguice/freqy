@@ -204,7 +204,18 @@ RSpec.describe WordAnalyzer, '#process_stdin' do
 end
 
 RSpec.describe WordAnalyzer, '#process_files' do
-end
+  context 'with multi-frequency phrases' do
+    it 'correctly counts phrases' do
+      word_analyzer = WordAnalyzer.new
 
-RSpec.describe WordAnalyzer, '#process_analyze' do
+      result = word_analyzer.process_files(["#{RSPEC_ROOT}/fixtures/to_build_a_fire.txt"])
+
+      expect(result).to be_a(Hash)
+      expect(result['in the snow']).to eq(12)
+      expect(result['on sulphur creek']).to eq(5)
+      expect(result['with his teeth']).to eq(4)
+      expect(result['the dog sat']).to eq(3)
+      expect(result.size).to eq(6561)
+    end
+  end
 end

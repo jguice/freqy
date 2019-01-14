@@ -106,3 +106,5 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
 end
+
+RSPEC_ROOT = File.dirname __FILE__ # for using fixture files in tests (is this built-in somewhere else??)
