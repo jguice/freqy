@@ -133,10 +133,36 @@ class Cli
 
     word_analyzer = WordAnalyzer.new
 
-    if @stdin.tty?
-      word_analyzer.process_files(@options.files)
+    results =
+      if @stdin.tty?
+        word_analyzer.process_files(@options.files)
+      else
+        word_analyzer.process_stdin(@stdin)
+      end
+
+    verify_results(results)
+  end
+
+  def show_results(results)
+    if results.is_a?(Hash)
+      results = results.sort_by(&:last).reverse
+
+      results.each_with_index do |result, times|
+        break if times == @options.number
+
+        puts(format('%<count>3d - %<phrase>s', count: result[1], phrase: result[0]))
+      end
     else
-      word_analyzer.process_stdin(@stdin)
+      puts results # didn't get a hash result (probably a helpful user message, just show it)
+    end
+  end
+
+  def verify_results(results)
+    if results.empty?
+      puts 'Not enough data'
+      0
+    else
+      show_results(results)
     end
   end
 end
