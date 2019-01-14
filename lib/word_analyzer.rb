@@ -10,7 +10,7 @@ class WordAnalyzer
   # Creates new word analyzer
   # @param delimiter [String] text that separates "words"
   # @param chunk [Integer] number of word chunks to read in a batch (adjust for performance tuning)
-  def initialize(delimiter = ' ', chunk = 1000)
+  def initialize(delimiter = ' ', chunk = 1496)
     @delimiter = delimiter # char that separates "words"
     @chunk = chunk # words
     @phrase_size = 3
