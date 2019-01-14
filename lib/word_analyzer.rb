@@ -48,6 +48,8 @@ class WordAnalyzer
     @freqs
   end
 
+  protected
+
   # analyzes element frequency in provided text
   # @param text [Enumerable] enumerable stream containing text (like a ruby IO object)
   # @return result [Hash] map of word chunks sorted by most to least frequent (top 'n' results)
@@ -71,8 +73,6 @@ class WordAnalyzer
       word.split(/\r?\n/)
     end.flatten # flatten any expanded words back into a single array/list and return it
   end
-
-  protected
 
   def process_words(words)
     words.each do |word|
