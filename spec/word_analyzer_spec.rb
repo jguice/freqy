@@ -3,8 +3,8 @@
 # noinspection RubyResolve
 require 'word_analyzer'
 
-# TODO: # The program ignores punctuation, line endings, and is case insensitive (e.g. “I love\nsandwiches.” should be
-#       treated the same as "(I LOVE SANDWICHES!!)")
+# TODO: add tests to ensure sorting of results
+# TODO: unit tests for "underlying" methods (e.g. filter)
 
 RSpec.describe WordAnalyzer, '#initialize' do
   context 'with no arguments' do
@@ -52,28 +52,28 @@ end
 
 RSpec.describe WordAnalyzer, '#process_stdin' do
   context 'with "blank" stdin' do
-    it 'returns a message (and does nothing otherwise)' do
+    it 'returns an empty result' do
       word_analyzer = WordAnalyzer.new
 
       result = word_analyzer.process_stdin(StringIO.new(''))
 
-      expect(result).to match(/No input/)
+      expect(result).to eq({})
     end
   end
 
   context 'with short stdin (< chunk < words)' do
-    it 'returns a message (and does nothing otherwise)' do
+    it 'returns an empty result' do
       word_analyzer = WordAnalyzer.new
 
       result = word_analyzer.process_stdin(StringIO.new('one'))
 
-      expect(result).to match(/Not enough data/)
+      expect(result).to eq({})
     end
   end
 
   # The program outputs a list of the 100 most common three word sequences in the text, along with a count of how many
   # times each occurred in the text. For example: 231 - i will not, 116 - i do not, 105 - there is no, 54 - i know not,
-  # 37 - i am not …
+  # 37 - i am not ...
   context 'with minimal valid input' do
     it 'returns a single frequency result' do
       word_analyzer = WordAnalyzer.new
