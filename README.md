@@ -110,3 +110,25 @@ things besides words (space character boundary in-betweens).
 
 You'll also find a stub in AdaptiveWordAnalyzer for an adaptive chunking implementation (and some notes) illustrating how to 
 plug in alternate implementations behind the WordAnalyzer interface.  See `cli.rb` for a commend example of passing a different analyzer class.
+
+### Other Considerations
+
+#### parallelizing
+Further performance increasing options involve running multiple threads/processes and parallelizing the workload:
+- break input into chunks at whitespace boundary
+- could use single db like dynamo w/ n number of processor instances
+- could also have separate data stores and recombine results (need to store more than top 100 from each though, in case cumulative amount is top-100 but individually not)
+
+#### ordering
+- ordering when multiple phrases tie for count will be in order of accumulation in text (which is scanned beginning to end in stream order)
+- in the case of parallel processing, this would be more randomized (by completion time on particular nodes/processes)
+
+#### documentation
+- could use github pages and merge docs + doc (generated) but better to use a pipeline to build and publish docs on every commit
+
+#### future enhancements
+- extract strings for UI localization
+- capture generic version for cli blueprint
+  - it's a good template with lint, documentation, class hierarchy, option handling, verbose mode, etc.
+- higher-level tests (integration, load, performance)
+- JSON results (e.g. for web API integration)
