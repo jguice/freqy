@@ -14,6 +14,8 @@ class WordAnalyzer
   def initialize(delimiter = ' ', chunk = 1000)
     @delimiter = delimiter # char that separates "words"
     @chunk = chunk # words
+    @ignore_chars = Regexp.escape('!@#$%^&*()_=+[{ ]}|;:\'",<.>\/?')
+    @ignore_regex = Regexp.new(/[#{@ignore_chars}]/)
 
     # validate argument types
     raise(ArgumentError) unless @delimiter.class == String
@@ -41,21 +43,24 @@ class WordAnalyzer
     phrase = []
 
     text.each(@delimiter).lazy.each_slice(@chunk) do |words|
-      pp words
-      pp @delimiter
+      words = filter(words)
 
       words.each do |word|
 
-        # remove special chars/spaces (NOTE: this is subtractive to attempt to preserve International characters)
-        word.gsub!(/[ !@%&"]/, '')
-        word.downcase!
+  def filter(words)
+    words.collect do |word|
+      word.gsub!(@ignore_regex, '')
 
-        phrase << word
+      word.downcase!
 
         if phrase.size == 3
           @freqs[phrase.join(@delimiter)] += 1
         end
       end
+      # expand newlines (with optional preceding carriage returns [DOS]) into multiple words
+      word.split(/\r?\n/)
+    end.flatten # flatten any expanded words back into a single array/list and return it
+  end
 
     end
 
