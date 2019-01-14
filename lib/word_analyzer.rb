@@ -14,6 +14,7 @@ class WordAnalyzer
   def initialize(delimiter = ' ', chunk = 1000)
     @delimiter = delimiter # char that separates "words"
     @chunk = chunk # words
+    @phrase_size = 3
     @ignore_chars = Regexp.escape('!@#$%^&*()_=+[{ ]}|;:\'",<.>\/?')
     @ignore_regex = Regexp.new(/[#{@ignore_chars}]/)
 
@@ -38,9 +39,7 @@ class WordAnalyzer
   # @param text [Enumerable] enumerable stream containing text (like a ruby IO object)
   # @return result [Hash] map of word chunks sorted by most to least frequent (top 'n' results)
   def analyze(text)
-    return 'No input to process' if text.eof?
-
-    phrase = []
+    @phrase = [] # instance variable to share across multiple files (and calls to analyze)
 
     text.each(@delimiter).lazy.each_slice(@chunk) do |words|
       words = filter(words)
@@ -53,22 +52,23 @@ class WordAnalyzer
 
       word.downcase!
 
-        if phrase.size == 3
-          @freqs[phrase.join(@delimiter)] += 1
-        end
-      end
       # expand newlines (with optional preceding carriage returns [DOS]) into multiple words
       word.split(/\r?\n/)
     end.flatten # flatten any expanded words back into a single array/list and return it
   end
 
+  protected
+
+  def process_words(words)
+    words.each do |word|
+      next if word.empty? # skip empty words (can happen in some filtering edge-cases)
+
+      @phrase << word
+
+      if @phrase.size == @phrase_size
+        @freqs[@phrase.join(@delimiter)] += 1
+        @phrase.shift
+      end
     end
-
-    pp @freqs
-
-    return 'Not enough data' if @freqs.empty?
-
-    @freqs
   end
-
 end
