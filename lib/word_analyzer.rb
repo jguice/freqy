@@ -3,6 +3,7 @@
 ##
 # Analyzes word (or multi-word) frequency in (potentially large) text
 class WordAnalyzer
+  # TODO: add stub and notes for adaptive chunking version
 
   # TODO: add top_n argument to allow for something besides top 100
   # TODO: add words argument to allow for something besides 3 word phrase
@@ -15,6 +16,8 @@ class WordAnalyzer
     @delimiter = delimiter # char that separates "words"
     @chunk = chunk # words
     @phrase_size = 3
+
+    # remove special chars/spaces (NOTE: this is subtractive partly in an attempt to preserve International characters)
     @ignore_chars = Regexp.escape('!@#$%^&*()_=+[{ ]}|;:\'",<.>\/?')
     @ignore_regex = Regexp.new(/[#{@ignore_chars}]/)
 
@@ -27,12 +30,22 @@ class WordAnalyzer
 
   def process_stdin(text)
     analyze(text)
+
+    @freqs
   end
 
   def process_files(files)
     files.each do |file|
       analyze(File.open(file))
+
+    # TODO: return info to the caller about handled exceptions and let it puts, etc.
+    rescue Errno::ENOENT
+      STDERR.puts("⚠️  No such file #{file}...skipping")
+    rescue Errno::EISDIR
+      STDERR.puts("⚠️  #{file} is a directory...skipping")
     end
+
+    @freqs
   end
 
   # analyzes element frequency in provided text
@@ -44,7 +57,9 @@ class WordAnalyzer
     text.each(@delimiter).lazy.each_slice(@chunk) do |words|
       words = filter(words)
 
-      words.each do |word|
+      process_words(words)
+    end
+  end
 
   def filter(words)
     words.collect do |word|
