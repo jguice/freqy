@@ -3,8 +3,8 @@
 ##
 # Analyzes word (or multi-word) frequency in (potentially large) text
 class WordAnalyzer
-  # TODO: add top_n argument to allow for something besides top 100
-  # TODO: add words argument to allow for something besides 3 word phrase
+  # TODO: add phrase_size (and default) to argument list
+  # TODO: convert options to named opts hash
   attr_reader(:delimiter, :chunk)
 
   # Creates new word analyzer
@@ -26,12 +26,18 @@ class WordAnalyzer
     @freqs = Hash.new(0)
   end
 
+  # Processes STDIN mechanism for data input.
+  # @param text [IO] text data to process
+  # @return [Hash] frequency counts by phrase
   def process_stdin(text)
     analyze(text)
 
     @freqs
   end
 
+  # Processes file(s) mechanism for data input.  Skips files on (most) errors.
+  # @param files [Enumerable] list of files to read and process
+  # @return [Hash] frequency counts by phrase
   def process_files(files)
     files.each do |file|
       analyze(File.open(file))
@@ -48,9 +54,8 @@ class WordAnalyzer
 
   protected
 
-  # analyzes element frequency in provided text
+  # Iterates through input text in fixed size chunks, loading as little data as possible into memory.
   # @param text [Enumerable] enumerable stream containing text (like a ruby IO object)
-  # @return result [Hash] map of word chunks sorted by most to least frequent (top 'n' results)
   def analyze(text)
     @phrase = [] # instance variable to share across multiple files (and calls to analyze)
 
@@ -61,6 +66,8 @@ class WordAnalyzer
     end
   end
 
+  # Filters words based on an exclusion character set, reduces case to lower, and splits words with inline line endings.
+  # @param words [Enumerable] list of words to filter (input will be modified in-place)
   def filter(words)
     words.collect do |word|
       word.gsub!(@ignore_regex, '')
@@ -73,6 +80,8 @@ class WordAnalyzer
   end
 
   def process_words(words)
+  # Counts occurrence of phrases in words (keeping track in a class property persistent across calls)
+  # @param words [Enumerable] list of word to extract and count phrases in
     words.each do |word|
       next if word.empty? # skip empty words (can happen in some filtering edge-cases)
 

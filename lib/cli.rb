@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'English'
@@ -70,7 +69,7 @@ class Cli
 
   protected
 
-  # process user-provided options
+  # Processes user-provided options.
   # @return [Boolean] true if parse succeeds, false otherwise
   def parse_options?
     begin
@@ -89,7 +88,7 @@ class Cli
     true
   end
 
-  # define accepted options, types, simple behaviors, etc.
+  # Defines accepted options, types, simple behaviors, etc.
   # @return [Integer, nil] shell exit code or nothing depending on user-provided options
   # noinspection RubyBlockToMethodReference
   def setup_options
@@ -104,7 +103,7 @@ class Cli
     @parser.on('-v', '--verbose', 'verbose output') { @options.verbose = true }
   end
 
-  # validate required options and show message + help if needed
+  # Validates required options and shows message + help if needed.
   def check_required
     # handle case where no files or text were passed (a tty is connected or STDIN is EOF in the latter case)
     return unless @options.files.to_a.empty? && (@stdin.tty? || @stdin.eof?) # to_a.empty? handles nil or empty case
@@ -113,7 +112,7 @@ class Cli
     show_help
   end
 
-  # display resulting option set
+  # Displays resulting option set.
   def show_effective_options
     puts "Options:\n"
 
@@ -122,12 +121,12 @@ class Cli
     end
   end
 
-  # show application version
+  # Shows application version.
   def show_version
     puts "#{FILENAME} version #{VERSION}"
   end
 
-  # display user help
+  # Displays user help.
   def show_help
     puts @parser
   end
@@ -148,6 +147,7 @@ class Cli
     verify_results(results)
   end
 
+  # Formats and displays results.
   def show_results(results)
     if results.is_a?(Hash)
       results = results.sort_by(&:last).reverse
@@ -162,6 +162,7 @@ class Cli
     end
   end
 
+  # Verifies result data.
   def verify_results(results)
     if results.empty?
       puts 'Not enough data'

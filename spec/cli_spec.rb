@@ -3,7 +3,7 @@
 # noinspection RubyResolve
 require 'cli'
 
-# TODO: shell exit code tests
+# TODO: add shell exit code tests
 
 RSpec.describe Cli, '#run' do
   context 'with version arg' do
