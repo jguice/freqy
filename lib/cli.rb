@@ -155,7 +155,7 @@ class Cli
       results.each_with_index do |result, times|
         break if times == @options.number
 
-        puts(format('%<count>3d - %<phrase>s', count: result[1], phrase: result[0]))
+        puts(format('%<count>4d - %<phrase>s', count: result[1], phrase: result[0]))
       end
     else
       puts results # didn't get a hash result (probably a helpful user message, just show it)
