@@ -62,7 +62,7 @@ class WordAnalyzer
     text.each(@delimiter).lazy.each_slice(@chunk) do |words|
       words = filter(words)
 
-      process_words(words)
+      count_phrases(words)
     end
   end
 
@@ -79,9 +79,9 @@ class WordAnalyzer
     end.flatten # flatten any expanded words back into a single array/list and return it
   end
 
-  def process_words(words)
   # Counts occurrence of phrases in words (keeping track in a class property persistent across calls)
   # @param words [Enumerable] list of word to extract and count phrases in
+  def count_phrases(words)
     words.each do |word|
       next if word.empty? # skip empty words (can happen in some filtering edge-cases)
 
