@@ -3,8 +3,6 @@
 ##
 # Analyzes word (or multi-word) frequency in (potentially large) text
 class WordAnalyzer
-  # TODO: add stub and notes for adaptive chunking version
-
   # TODO: add top_n argument to allow for something besides top 100
   # TODO: add words argument to allow for something besides 3 word phrase
   attr_reader(:delimiter, :chunk)

@@ -8,6 +8,7 @@ require 'date'
 require 'pp'
 
 require_relative 'word_analyzer'
+require_relative 'adaptive_word_analyzer'
 
 ##
 # Implements a command-line interface for the frequency analyzer
@@ -54,7 +55,10 @@ class Cli
 
       show_effective_options if @options.verbose
 
-      do_work
+      # do_work(WordAnalyzer)
+
+      # example alternate analyzer implementation
+      do_work(AdaptiveWordAnalyzer)
 
       puts "\nFinished at #{DateTime.now}" if @options.verbose
 
@@ -128,11 +132,11 @@ class Cli
     puts @parser
   end
 
-  # initiate actual functionality
-  def do_work
+  # Initiates actual functionality.
+  def do_work(analyzer = WordAnalyzer)
     puts 'Analyzing Data: ' + @options.files.join(', ')
 
-    word_analyzer = WordAnalyzer.new
+    word_analyzer = analyzer.new
 
     results =
       if @stdin.tty?
